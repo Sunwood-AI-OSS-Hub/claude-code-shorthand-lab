@@ -44,15 +44,18 @@ cd exercises/02_slash_commands
 # 2. Docker コンテナを起動
 docker compose up -d
 
-# 3. Claude Code を GLM4.7 で起動
-docker compose exec dev bash -l - ccd-glm
+# 3. コンテナに入る（developer ユーザー）
+docker compose run --rm dev
 
-# 4. スラッシュコマンドを使ってみる
+# 4. Claude Code を起動
+ccd-glm
+
+# 5. スラッシュコマンドを使ってみる
 /dojo-plan
 ```
 
 > [!NOTE]
-> `ccd-glm` は、GLM4.7（格安・高性能モデル）で Claude Code を起動するラッパーコマンドです。
+> `docker compose run --rm dev` で developer ユーザーとしてコンテナに入り、`ccd-glm` で Claude Code を起動します。
 
 ## 完了条件
 
@@ -62,13 +65,20 @@ docker compose exec dev bash -l - ccd-glm
 
 ## 動作確認
 
-Claude Code で以下を実行してください：
+Claude Code で以下のコマンドを順番に実行してください：
 
-```
-/dojo-plan 関数を追加する機能
+```bash
+# 1. 機能の計画を立てる
+/dojo-plan 足し算関数を追加する機能
+
+# 2. テストを実行する
+/dojo-test
+
+# 3. コードレビューをする
+/dojo-review
 ```
 
-計画が適切に作成されることを確認してください。
+各コマンドが正しく動作することを確認してください。
 
 ---
 
