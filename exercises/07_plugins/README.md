@@ -51,8 +51,8 @@ cd exercises/07_plugins
 # 2. Docker コンテナを起動
 docker compose up -d
 
-# 3. コンテナに入る
-docker compose exec dev bash
+# 3. Claude Code を GLM4.7 で起動
+docker compose exec dev bash -l - ccd-glm
 
 # 4. プラグインをインストール
 claude plugin install ./plugins/dojo-tools
@@ -60,6 +60,9 @@ claude plugin install ./plugins/dojo-tools
 # 5. プラグインのコマンドを使う
 /dojo-hello
 ```
+
+> [!NOTE]
+> `ccd-glm` は、GLM4.7（格安・高性能モデル）で Claude Code を起動するラッパーコマンドです。
 
 ## 完了条件
 
