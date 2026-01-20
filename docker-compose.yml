@@ -1,0 +1,35 @@
+# Claude Code Shorthand Lab - Docker Compose
+# ……ふふ、docker compose up するだけで準備できるの
+
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dev
+    image: claude-shorthand-lab:dev
+    container_name: claude-shorthand-lab-dev
+    working_dir: /workspace
+    user: "1000:1000"
+
+    environment:
+      # Z.AI (GLM) API Settings
+      - ZAI_API_KEY=${ZAI_API_KEY}
+      - ZAI_ANTHROPIC_BASE_URL=${ZAI_ANTHROPIC_BASE_URL:-https://api.zai-kai.com/v1}
+      - ZAI_DEFAULT_HAIKU_MODEL=${ZAI_DEFAULT_HAIKU_MODEL:-glm-4.7-flash}
+      - ZAI_DEFAULT_SONNET_MODEL=${ZAI_DEFAULT_SONNET_MODEL:-glm-4.7}
+      - ZAI_DEFAULT_OPUS_MODEL=${ZAI_DEFAULT_OPUS_MODEL:-glm-4.7}
+      - API_TIMEOUT_MS=${API_TIMEOUT_MS:-3000000}
+
+      # UID/GID（ホスト側と合わせる場合）
+      - HOST_UID=${HOST_UID:-}
+      - HOST_GID=${HOST_GID:-}
+
+    volumes:
+      # プロジェクトディレクトリをマウント
+      - .:/workspace
+
+    # シグナル処理
+    stop_grace_period: 10s
+
+    tty: true
+    stdin_open: true
