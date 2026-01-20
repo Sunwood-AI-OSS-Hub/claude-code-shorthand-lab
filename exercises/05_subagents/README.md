@@ -49,15 +49,15 @@ cd exercises/05_subagents
 # 2. Docker コンテナを起動
 docker compose up -d
 
-# 3. コンテナに入る
-docker compose exec dev bash
+# 3. Claude Code を GLM4.7 で起動
+docker compose exec dev bash -l - ccd-glm
 
-# 4. Claude Code を起動
-claude
-
-# 5. サブエージェントにタスクを委譲
+# 4. サブエージェントにタスクを委譲
 # 「このコードをレビューして」と言うと、code-reviewer エージェントが動作します
 ```
+
+> [!NOTE]
+> `ccd-glm` は、GLM4.7（格安・高性能モデル）で Claude Code を起動するラッパーコマンドです。
 
 ## 完了条件
 
