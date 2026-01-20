@@ -1,0 +1,62 @@
+{
+  "PreToolUse": [
+    {
+      "matcher": "tool == \"Bash\" && tool_input.command matches \"(npm|pnpm|yarn|cargo)\"",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "echo '[Hook] 長時間実行されるコマンドです。tmuxを使うことを検討してください' >&2"
+        }
+      ]
+    },
+    {
+      "matcher": "tool == \"Write\" && tool_input.file_path matches \"\\.md$\"",
+      "hooks": [
+        {
+          "type": "prompt",
+          "prompt": "この .md ファイルは本当に必要ですか？ README または CLAUDE 以外の .md ファイル作成を確認してください。"
+        }
+      ]
+    }
+  ],
+  "PostToolUse": [
+    {
+      "matcher": "tool == \"Edit\" && tool_input.file_path matches \"\\.(ts|tsx|js|jsx)$\"",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "cd app && prettier --write $(echo $FILE_PATH | sed 's|.*/app/||') 2>/dev/null || true"
+        }
+      ]
+    },
+    {
+      "matcher": "tool == \"Edit\" && tool_input.file_path matches \"\\.(ts|tsx)$\"",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "cd app && npx tsc --noEmit 2>&1 | head -20 || true"
+        }
+      ]
+    },
+    {
+      "matcher": "tool == \"Edit\"",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "grep -n \"console\\.log\" app/src/*.ts 2>/dev/null | wc -l | xargs -I {} echo \"[Hook] app/src/ に {} 個の console.log があります\" >&2 || true"
+        }
+      ]
+    }
+  ],
+  "Stop": [
+    {
+      "matcher": "*",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "echo '[Hook] セッション終了前にもう一度確認してください：' >&2 && git status --short 2>/dev/null || true"
+        }
+      ]
+    }
+  ]
+}

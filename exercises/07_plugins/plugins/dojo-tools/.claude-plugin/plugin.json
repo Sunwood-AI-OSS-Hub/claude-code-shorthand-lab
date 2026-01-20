@@ -1,0 +1,35 @@
+{
+  "name": "dojo-tools",
+  "version": "1.0.0",
+  "description": "Claude Code学習用プラグイン - 基本的なツールセット",
+  "author": "Agent ZERO",
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "dojo-hello",
+      "description": "挨拶をする"
+    },
+    {
+      "name": "dojo-plan",
+      "description": "機能の実装計画を立てる"
+    },
+    {
+      "name": "dojo-test",
+      "description": "テストを実行して結果を確認する"
+    },
+    {
+      "name": "dojo-review",
+      "description": "コードレビューを実行する"
+    }
+  ],
+  "skills": [
+    {
+      "name": "quick-review",
+      "description": "クイックコードレビュー"
+    },
+    {
+      "name": "tdd-workflow",
+      "description": "テスト駆動開発ワークフロー"
+    }
+  ]
+}

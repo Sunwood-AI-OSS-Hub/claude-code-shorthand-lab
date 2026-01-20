@@ -1,0 +1,28 @@
+services:
+  dev:
+    build:
+      context: ../../
+      dockerfile: docker/Dockerfile.dev
+    volumes:
+      - ./:/workspace
+    working_dir: /workspace
+    environment:
+      - HOST_UID=${HOST_UID:-1000}
+      - HOST_GID=${HOST_GID:-1000}
+    command: sleep infinity
+
+  # 簡易MCPサーバー（学習用）
+  mcp:
+    build:
+      context: ../../
+      dockerfile: docker/Dockerfile.dev
+    volumes:
+      - ./mcp-server:/workspace
+    working_dir: /workspace
+    environment:
+      - HOST_UID=${HOST_UID:-1000}
+      - HOST_GID=${HOST_GID:-1000}
+      - MCP_PORT=3000
+    command: "npm run dev"
+    ports:
+      - "3000:3000"

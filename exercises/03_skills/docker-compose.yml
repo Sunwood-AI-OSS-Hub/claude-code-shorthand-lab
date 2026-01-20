@@ -1,0 +1,12 @@
+services:
+  dev:
+    build:
+      context: ../../
+      dockerfile: docker/Dockerfile.dev
+    volumes:
+      - ./:/workspace
+    working_dir: /workspace
+    environment:
+      - HOST_UID=${HOST_UID:-1000}
+      - HOST_GID=${HOST_GID:-1000}
+    command: sleep infinity
