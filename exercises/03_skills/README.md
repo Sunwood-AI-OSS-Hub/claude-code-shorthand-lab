@@ -46,15 +46,15 @@ cd exercises/03_skills
 # 2. Docker コンテナを起動
 docker compose up -d
 
-# 3. コンテナに入る
-docker compose exec dev bash
+# 3. Claude Code を GLM4.7 で起動
+docker compose exec dev bash -l - ccd-glm
 
-# 4. Claude Code を起動
-claude
-
-# 5. スキルを使ってみる
+# 4. スキルを使ってみる
 /tdd-workflow 関数を追加する
 ```
+
+> [!NOTE]
+> `ccd-glm` は、GLM4.7（格安・高性能モデル）で Claude Code を起動するラッパーコマンドです。
 
 ## 完了条件
 
