@@ -44,8 +44,8 @@ cd exercises/01_claude_md
 # 2. Docker コンテナを起動
 docker compose up -d
 
-# 3. コンテナに入る
-docker compose exec dev bash
+# 3. コンテナに入る（ログインシェルで起動）
+docker compose exec dev bash -l
 
 # 4. Claude Code を起動
 claude
