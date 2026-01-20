@@ -35,6 +35,9 @@ RUN npm install -g \
 USER developer
 RUN curl -fsSL https://raw.githubusercontent.com/Sunwood-AI-OSS-Hub/zero-cc/refs/heads/main/script/install.sh | bash
 
+# 色付きプロンプトを強制有効化
+RUN sed -i 's/#force_color_prompt=yes/force_color_prompt=yes/' ~/.bashrc
+
 # .bashrc.d を non-interactive でも読み込むように修正
 # 1. .bashrcの末尾にあるzero-ccが追加した部分を削除
 # 2. .bashrcの先頭に追加
