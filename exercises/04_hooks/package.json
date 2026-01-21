@@ -1,0 +1,13 @@
+{
+  "name": "simple-app",
+  "version": "1.0.0",
+  "description": "A simple Node.js app",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node index.js",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}

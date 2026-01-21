@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash(npm run dev*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '🔔 [Hook] DEV SERVER! tmuxを使うことをおすすめします！' >&2; exit 1"
+          }
+        ]
+      }
+    ]
+  }
+}
