@@ -1,0 +1,3 @@
+# App
+
+This directory contains the application source code.
