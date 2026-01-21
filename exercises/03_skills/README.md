@@ -74,6 +74,12 @@ Claude Code で以下を実行してください：
 
 テストから書き始めるTDDサイクルが実行されることを確認してください。
 
+## デモ動画
+
+実際の動作デモはこちら：
+
+[![Demo Tweet](https://img.shields.io/badge/Demo-Video-blue?style=social&logo=x)](https://x.com/hAru_mAki_ch/status/2013567036539183457)
+
 ---
 
 **前のステップ**: [Exercise 02: Slash Commands](../02_slash_commands/README.md)

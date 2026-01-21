@@ -85,6 +85,12 @@ ccd-glm --debug hooks
 
 各フックが発火していることを確認してください。
 
+## デモ動画
+
+実際の動作デモはこちら：
+
+[![Demo Tweet](https://img.shields.io/badge/Demo-Video-blue?style=social&logo=x)](https://x.com/hAru_mAki_ch/status/2013955306645078381)
+
 ## フックの仕組み
 
 フックは `settings.json` に以下のように記述します：

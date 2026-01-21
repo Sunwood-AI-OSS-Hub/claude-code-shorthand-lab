@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高機能サイコロアプリ | TDD実装</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --secondary-color: #10b981;
+            --background: #0f172a;
+            --surface: #1e293b;
+            --surface-light: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border: #475569;
+            --dice-d4: #ef4444;
+            --dice-d6: #f59e0b;
+            --dice-d8: #10b981;
+            --dice-d10: #3b82f6;
+            --dice-d12: #8b5cf6;
+            --dice-d20: #ec4899;
+            --dice-d100: #06b6d4;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--dice-d20));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            background: var(--surface);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .controls-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        select, input[type="number"] {
+            background: var(--surface-light);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+            min-width: 150px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        /* Dice Type Selector */
+        .dice-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .dice-type-btn {
+            background: var(--surface-light);
+            border: 2px solid transparent;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1.25rem;
+            color: var(--text-primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dice-type-btn:hover {
+            background: var(--surface);
+            transform: translateY(-2px);
+        }
+
+        .dice-type-btn.active {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+        }
+
+        .dice-type-btn.d4.active { background: var(--dice-d4); border-color: var(--dice-d4); }
+        .dice-type-btn.d6.active { background: var(--dice-d6); border-color: var(--dice-d6); }
+        .dice-type-btn.d8.active { background: var(--dice-d8); border-color: var(--dice-d8); }
+        .dice-type-btn.d10.active { background: var(--dice-d10); border-color: var(--dice-d10); }
+        .dice-type-btn.d12.active { background: var(--dice-d12); border-color: var(--dice-d12); }
+        .dice-type-btn.d20.active { background: var(--dice-d20); border-color: var(--dice-d20); }
+        .dice-type-btn.d100.active { background: var(--dice-d100); border-color: var(--dice-d100); }
+
+        /* Roll Button */
+        .roll-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+            border: none;
+            border-radius: 1rem;
+            padding: 1rem 3rem;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+            margin-top: 1rem;
+        }
+
+        .roll-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+        }
+
+        .roll-btn:active {
+            transform: translateY(0);
+        }
+
+        .roll-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Dice Display Area */
+        .dice-area {
+            background: var(--surface);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            min-height: 300px;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dice-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        /* 3D Dice Styles */
+        .dice {
+            width: 80px;
+            height: 80px;
+            perspective: 200px;
+            position: relative;
+        }
+
+        .dice-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.1s;
+        }
+
+        .dice.rolling .dice-inner {
+            animation: diceRoll 1.5s ease-out;
+        }
+
+        @keyframes diceRoll {
+            0% {
+                transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+            }
+            25% {
+                transform: rotateX(180deg) rotateY(180deg) rotateZ(90deg);
+            }
+            50% {
+                transform: rotateX(360deg) rotateY(270deg) rotateZ(180deg);
+            }
+            75% {
+                transform: rotateX(540deg) rotateY(360deg) rotateZ(270deg);
+            }
+            100% {
+                transform: rotateX(720deg) rotateY(540deg) rotateZ(360deg);
+            }
+        }
+
+        .dice-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, var(--surface-light), var(--surface));
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--text-primary);
+            backface-visibility: hidden;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        /* Dice-specific colors */
+        .dice[data-type="D4"] .dice-face { background: linear-gradient(145deg, #f87171, var(--dice-d4)); }
+        .dice[data-type="D6"] .dice-face { background: linear-gradient(145deg, #fbbf24, var(--dice-d6)); }
+        .dice[data-type="D8"] .dice-face { background: linear-gradient(145deg, #34d399, var(--dice-d8)); }
+        .dice[data-type="D10"] .dice-face { background: linear-gradient(145deg, #60a5fa, var(--dice-d10)); }
+        .dice[data-type="D12"] .dice-face { background: linear-gradient(145deg, #a78bfa, var(--dice-d12)); }
+        .dice[data-type="D20"] .dice-face { background: linear-gradient(145deg, #f472b6, var(--dice-d20)); }
+        .dice[data-type="D100"] .dice-face { background: linear-gradient(145deg, #22d3ee, var(--dice-d100)); }
+
+        /* Result Display */
+        .result-display {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .result-total {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--secondary-color), #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .result-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-breakdown {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .result-item {
+            background: var(--surface-light);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+        }
+
+        /* History Section */
+        .history-section {
+            background: var(--surface);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .history-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .clear-history-btn {
+            background: var(--surface-light);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .clear-history-btn:hover {
+            background: #ef4444;
+            border-color: #ef4444;
+            color: white;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            background: var(--surface-light);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .history-item:hover {
+            background: var(--border);
+        }
+
+        .history-info {
+            flex: 1;
+        }
+
+        .history-dice {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .history-results {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .history-total {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-left: 1rem;
+        }
+
+        .empty-history {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 2rem;
+        }
+
+        /* Test Console */
+        .test-console {
+            background: #000;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 1px solid var(--border);
+            font-family: 'Courier New', monospace;
+        }
+
+        .test-console-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .test-console-title {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .run-tests-btn {
+            background: var(--secondary-color);
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .run-tests-btn:hover {
+            background: #059669;
+        }
+
+        .test-output {
+            color: #10b981;
+            font-size: 0.875rem;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .test-pass {
+            color: #10b981;
+        }
+
+        .test-fail {
+            color: #ef4444;
+        }
+
+        .test-info {
+            color: #3b82f6;
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            .dice.rolling .dice-inner {
+                animation: none;
+            }
+
+            .dice-type-btn,
+            .roll-btn,
+            .history-item {
+                transition: none;
+            }
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            .controls-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .dice {
+                width: 60px;
+                height: 60px;
+            }
+
+            .dice-face {
+                font-size: 1.5rem;
+            }
+
+            .result-total {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎲 高機能サイコロアプリ</h1>
+            <p class="subtitle">TDD (Test-Driven Development) で実装されたサイコロアプリ</p>
+        </header>
+
+        <!-- Control Panel -->
+        <section class="control-panel" role="region" aria-label="サイコロ操作パネル">
+            <div class="control-group" style="align-items: center;">
+                <label for="dice-count">サイコロの個数</label>
+                <input
+                    type="number"
+                    id="dice-count"
+                    min="1"
+                    max="20"
+                    value="1"
+                    aria-describedby="dice-count-help"
+                >
+                <span id="dice-count-help" class="sr-only">1から20までの値を入力できます</span>
+            </div>
+
+            <div class="dice-selector" role="group" aria-label="サイコロタイプ選択">
+                <button class="dice-type-btn d6 active" data-dice="D6" aria-pressed="true">D6</button>
+                <button class="dice-type-btn d4" data-dice="D4" aria-pressed="false">D4</button>
+                <button class="dice-type-btn d8" data-dice="D8" aria-pressed="false">D8</button>
+                <button class="dice-type-btn d10" data-dice="D10" aria-pressed="false">D10</button>
+                <button class="dice-type-btn d12" data-dice="D12" aria-pressed="false">D12</button>
+                <button class="dice-type-btn d20" data-dice="D20" aria-pressed="false">D20</button>
+                <button class="dice-type-btn d100" data-dice="D100" aria-pressed="false">D100</button>
+            </div>
+
+            <button class="roll-btn" id="roll-btn" aria-label="サイコロを振る">
+                🎲 サイコロを振る
+            </button>
+        </section>
+
+        <!-- Dice Display Area -->
+        <section class="dice-area" role="region" aria-label="サイコロ表示エリア" aria-live="polite">
+            <div class="dice-container" id="dice-container">
+                <p class="empty-history" style="color: var(--text-secondary);">
+                    サイコロを振る準備ができました！
+                </p>
+            </div>
+            <div class="result-display" id="result-display" style="display: none;">
+                <div class="result-label">合計値</div>
+                <div class="result-total" id="result-total">0</div>
+                <div class="result-breakdown" id="result-breakdown"></div>
+            </div>
+        </section>
+
+        <!-- History Section -->
+        <section class="history-section" role="region" aria-label="履歴">
+            <div class="history-header">
+                <h2 class="history-title">📋 履歴</h2>
+                <button class="clear-history-btn" id="clear-history-btn" aria-label="履歴をクリア">
+                    クリア
+                </button>
+            </div>
+            <div class="history-list" id="history-list">
+                <p class="empty-history">まだ履歴がありません</p>
+            </div>
+        </section>
+
+        <!-- Test Console -->
+        <section class="test-console" role="region" aria-label="テストコンソール">
+            <div class="test-console-header">
+                <span class="test-console-title">🧪 TDD テストコンソール</span>
+                <button class="run-tests-btn" id="run-tests-btn">すべてのテストを実行</button>
+            </div>
+            <div class="test-output" id="test-output">テストを実行するにはボタンをクリックしてください...</div>
+        </section>
+    </div>
+
+    <script>
+    /**
+     * ============================================================
+     * TDD: 高機能サイコロアプリ
+     * ============================================================
+     * Red-Green-Refactor サイクルで実装されたサイコロアプリ
+     * ============================================================
+     */
+
+    /**
+     * ============================================================
+     * PHASE 2: コアロジック (DiceLogic)
+     * ============================================================
+     *
+     * REDフェーズ: 最初にテストケースを定義
+     * - DiceLogic.roll('D6', 1) が 1-6 の数値を返す
+     * - DiceLogic.roll('D6', 3) が3つの数値の配列を返す
+     * - 合計値が正しく計算される
+     * - すべてのサイコロタイプが正しく動作する
+     */
+
+    const DiceLogic = {
+        // サイコロの定義
+        diceTypes: {
+            D4: { sides: 4, name: 'D4' },
+            D6: { sides: 6, name: 'D6' },
+            D8: { sides: 8, name: 'D8' },
+            D10: { sides: 10, name: 'D10' },
+            D12: { sides: 12, name: 'D12' },
+            D20: { sides: 20, name: 'D20' },
+            D100: { sides: 100, name: 'D100' }
+        },
+
+        /**
+         * 乱数生成（テスト可能なように分離）
+         * @param {number} min - 最小値
+         * @param {number} max - 最大値
+         * @returns {number} 乱数
+         */
+        random: function(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        },
+
+        /**
+         * サイコロを振る
+         * @param {string} type - サイコロタイプ (D4, D6, D8, D10, D12, D20, D100)
+         * @param {number} count - サイコロの個数
+         * @returns {Object} { results: number[], total: number }
+         */
+        roll: function(type, count) {
+            const dice = this.diceTypes[type];
+            if (!dice) {
+                throw new Error(`Invalid dice type: ${type}`);
+            }
+            if (count < 1 || count > 20) {
+                throw new Error(`Invalid dice count: ${count}. Must be between 1 and 20.`);
+            }
+
+            const results = [];
+            for (let i = 0; i < count; i++) {
+                results.push(this.random(1, dice.sides));
+            }
+
+            return {
+                results: results,
+                total: results.reduce((sum, val) => sum + val, 0)
+            };
+        },
+
+        /**
+         * サイコロの最大値を取得
+         * @param {string} type - サイコロタイプ
+         * @returns {number} 最大値
+         */
+        getMaxValue: function(type) {
+            const dice = this.diceTypes[type];
+            return dice ? dice.sides : 0;
+        },
+
+        /**
+         * すべてのサイコロタイプを取得
+         * @returns {string[]} サイコロタイプの配列
+         */
+        getDiceTypes: function() {
+            return Object.keys(this.diceTypes);
+        }
+    };
+
+    /**
+     * ============================================================
+     * PHASE 3: 履歴管理 (HistoryManager)
+     * ============================================================
+     *
+     * REDフェーズ: 最初にテストケースを定義
+     * - 履歴が追加される
+     * - LocalStorageに保存される
+     * - 最大50件を超えると古いものが削除される
+     * - 履歴をクリアできる
+     */
+
+    const HistoryManager = {
+        STORAGE_KEY: 'dice-app-history',
+        MAX_HISTORY: 50,
+
+        /**
+         * 履歴を取得
+         * @returns {Array} 履歴配列
+         */
+        getHistory: function() {
+            try {
+                const stored = localStorage.getItem(this.STORAGE_KEY);
+                return stored ? JSON.parse(stored) : [];
+            } catch (e) {
+                console.error('Failed to load history:', e);
+                return [];
+            }
+        },
+
+        /**
+         * 履歴を保存
+         * @param {Array} history - 履歴配列
+         */
+        saveHistory: function(history) {
+            try {
+                localStorage.setItem(this.STORAGE_KEY, JSON.stringify(history));
+            } catch (e) {
+                console.error('Failed to save history:', e);
+            }
+        },
+
+        /**
+         * ロール結果を履歴に追加
+         * @param {string} diceType - サイコロタイプ
+         * @param {number} count - 個数
+         * @param {Array} results - 結果配列
+         * @param {number} total - 合計値
+         */
+        addRoll: function(diceType, count, results, total) {
+            const history = this.getHistory();
+
+            const entry = {
+                id: Date.now(),
+                timestamp: new Date().toISOString(),
+                diceType: diceType,
+                count: count,
+                results: results,
+                total: total
+            };
+
+            history.unshift(entry); // 新しいものを先頭に追加
+
+            // 最大50件を超えたら古いものを削除
+            if (history.length > this.MAX_HISTORY) {
+                history.splice(this.MAX_HISTORY);
+            }
+
+            this.saveHistory(history);
+            return entry;
+        },
+
+        /**
+         * 履歴をクリア
+         */
+        clear: function() {
+            localStorage.removeItem(this.STORAGE_KEY);
+        },
+
+        /**
+         * 履歴を1件削除
+         * @param {number} id - エントリーID
+         */
+        deleteEntry: function(id) {
+            const history = this.getHistory();
+            const filtered = history.filter(entry => entry.id !== id);
+            this.saveHistory(filtered);
+        }
+    };
+
+    /**
+     * ============================================================
+     * PHASE 4: 3Dレンダリング (DiceRenderer)
+     * ============================================================
+     *
+     * REDフェーズ: 最初にテストケースを定義
+     * - サイコロ要素が作成される
+     * - アニメーションCSSクラスが適用される
+     * - 結果が表示される
+     */
+
+    const DiceRenderer = {
+        /**
+         * サイコロ要素を作成
+         * @param {string} type - サイコロタイプ
+         * @param {number} value - 表示する値
+         * @returns {HTMLElement} サイコロ要素
+         */
+        createDice: function(type, value) {
+            const dice = document.createElement('div');
+            dice.className = 'dice';
+            dice.dataset.type = type;
+            dice.setAttribute('role', 'img');
+            dice.setAttribute('aria-label', `${type}サイコロ: ${value}`);
+
+            const inner = document.createElement('div');
+            inner.className = 'dice-inner';
+
+            const face = document.createElement('div');
+            face.className = 'dice-face';
+            face.textContent = value;
+
+            inner.appendChild(face);
+            dice.appendChild(inner);
+
+            return dice;
+        },
+
+        /**
+         * サイコロコンテナをクリア
+         */
+        clearContainer: function() {
+            const container = document.getElementById('dice-container');
+            if (container) {
+                container.innerHTML = '';
+            }
+        },
+
+        /**
+         * サイコロを表示
+         * @param {string} type - サイコロタイプ
+         * @param {Array} results - 結果配列
+         */
+        renderDice: function(type, results) {
+            this.clearContainer();
+            const container = document.getElementById('dice-container');
+
+            results.forEach((value, index) => {
+                const dice = this.createDice(type, value);
+                container.appendChild(dice);
+
+                // アニメーションを少し遅らせて適用
+                setTimeout(() => {
+                    dice.classList.add('rolling');
+                }, index * 100);
+            });
+        },
+
+        /**
+         * 結果を表示
+         * @param {number} total - 合計値
+         * @param {Array} results - 結果配列
+         */
+        renderResult: function(total, results) {
+            const resultDisplay = document.getElementById('result-display');
+            const resultTotal = document.getElementById('result-total');
+            const resultBreakdown = document.getElementById('result-breakdown');
+
+            resultTotal.textContent = total;
+            resultBreakdown.textContent = '';
+
+            results.forEach((value, index) => {
+                const item = document.createElement('div');
+                item.className = 'result-item';
+                item.textContent = `#${index + 1}: ${value}`;
+                resultBreakdown.appendChild(item);
+            });
+
+            resultDisplay.style.display = 'block';
+        },
+
+        /**
+         * 結果エリアを非表示
+         */
+        hideResult: function() {
+            const resultDisplay = document.getElementById('result-display');
+            resultDisplay.style.display = 'none';
+        }
+    };
+
+    /**
+     * ============================================================
+     * PHASE 5: UIコントローラー (UIController)
+     * ============================================================
+     *
+     * REDフェーズ: 最初にテストケースを定義
+     * - Rollボタンクリックでサイコロが振られる
+     * - サイコロタイプ選択で設定が変更される
+     * - 履歴が更新される
+     */
+
+    const UIController = {
+        // 定数（CSSと同期させる）
+        ANIMATION_DURATION: 1500, // CSSの1.5sと一致
+
+        state: {
+            selectedDice: 'D6',
+            diceCount: 1,
+            isRolling: false
+        },
+
+        /**
+         * 初期化
+         */
+        init: function() {
+            this.bindEvents();
+            this.loadHistory();
+            this.updateDiceCount();
+        },
+
+        /**
+         * イベントをバインド
+         */
+        bindEvents: function() {
+            // サイコロタイプ選択
+            const diceButtons = document.querySelectorAll('.dice-type-btn');
+            diceButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    this.selectDiceType(e.target.dataset.dice);
+                });
+            });
+
+            // サイコロ数入力
+            const countInput = document.getElementById('dice-count');
+            countInput.addEventListener('change', (e) => {
+                this.updateDiceCount();
+            });
+
+            // Rollボタン
+            const rollBtn = document.getElementById('roll-btn');
+            rollBtn.addEventListener('click', () => {
+                this.rollDice();
+            });
+
+            // 履歴クリアボタン
+            const clearBtn = document.getElementById('clear-history-btn');
+            clearBtn.addEventListener('click', () => {
+                this.clearHistory();
+            });
+
+            // テスト実行ボタン
+            const testBtn = document.getElementById('run-tests-btn');
+            testBtn.addEventListener('click', () => {
+                TestRunner.runAllTests();
+            });
+
+            // キーボードショートカット（フォーム入力中は無効化）
+            document.addEventListener('keydown', (e) => {
+                // フォーム要素にフォーカスがある場合は無効化
+                const isInputFocused = e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT';
+                if (e.key === 'Enter' && !e.shiftKey && !isInputFocused) {
+                    e.preventDefault();
+                    this.rollDice();
+                }
+            });
+        },
+
+        /**
+         * サイコロタイプを選択
+         * @param {string} type - サイコロタイプ
+         */
+        selectDiceType: function(type) {
+            this.state.selectedDice = type;
+
+            // ボタンの状態を更新
+            const buttons = document.querySelectorAll('.dice-type-btn');
+            buttons.forEach(btn => {
+                const isSelected = btn.dataset.dice === type;
+                btn.classList.toggle('active', isSelected);
+                btn.setAttribute('aria-pressed', isSelected.toString());
+            });
+        },
+
+        /**
+         * サイコロ数を更新
+         */
+        updateDiceCount: function() {
+            const input = document.getElementById('dice-count');
+            let value = parseInt(input.value);
+
+            // バリデーション
+            if (isNaN(value) || value < 1) value = 1;
+            if (value > 20) value = 20;
+
+            input.value = value;
+            this.state.diceCount = value;
+        },
+
+        /**
+         * サイコロを振る
+         */
+        rollDice: function() {
+            if (this.state.isRolling) return;
+
+            this.state.isRolling = true;
+
+            // すべてのコントロールを無効化
+            const rollBtn = document.getElementById('roll-btn');
+            const countInput = document.getElementById('dice-count');
+            const diceButtons = document.querySelectorAll('.dice-type-btn');
+
+            rollBtn.disabled = true;
+            countInput.disabled = true;
+            diceButtons.forEach(btn => btn.disabled = true);
+
+            rollBtn.textContent = '🎲 振っています...';
+
+            // 結果を生成
+            const result = DiceLogic.roll(this.state.selectedDice, this.state.diceCount);
+
+            // サイコロを表示
+            DiceRenderer.renderDice(this.state.selectedDice, result.results);
+
+            // アニメーション後に結果を表示
+            setTimeout(() => {
+                DiceRenderer.renderResult(result.total, result.results);
+
+                // 履歴に追加
+                HistoryManager.addRoll(
+                    this.state.selectedDice,
+                    this.state.diceCount,
+                    result.results,
+                    result.total
+                );
+                this.loadHistory();
+
+                // コントロールを再有効化
+                rollBtn.disabled = false;
+                countInput.disabled = false;
+                diceButtons.forEach(btn => btn.disabled = false);
+
+                rollBtn.textContent = '🎲 サイコロを振る';
+                this.state.isRolling = false;
+            }, this.ANIMATION_DURATION);
+        },
+
+        /**
+         * 履歴を読み込んで表示
+         */
+        loadHistory: function() {
+            const history = HistoryManager.getHistory();
+            const list = document.getElementById('history-list');
+
+            if (history.length === 0) {
+                list.textContent = '';
+                const emptyMsg = document.createElement('p');
+                emptyMsg.className = 'empty-history';
+                emptyMsg.textContent = 'まだ履歴がありません';
+                list.appendChild(emptyMsg);
+                return;
+            }
+
+            list.textContent = '';
+            history.forEach(entry => {
+                const item = this.createHistoryItem(entry);
+                list.appendChild(item);
+            });
+        },
+
+        /**
+         * 履歴アイテムを作成
+         * @param {Object} entry - 履歴エントリー
+         * @returns {HTMLElement} 履歴アイテム要素
+         */
+        createHistoryItem: function(entry) {
+            const item = document.createElement('div');
+            item.className = 'history-item';
+
+            const date = new Date(entry.timestamp);
+            const timeStr = date.toLocaleTimeString('ja-JP', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+
+            // 安全なDOM操作で構築（XSS脆弱性対策）
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'history-info';
+
+            const diceDiv = document.createElement('div');
+            diceDiv.className = 'history-dice';
+            diceDiv.textContent = `${entry.diceType} × ${entry.count}`;
+
+            const resultsDiv = document.createElement('div');
+            resultsDiv.className = 'history-results';
+            resultsDiv.textContent = entry.results.join(', ');
+
+            const timeDiv = document.createElement('div');
+            timeDiv.className = 'history-results';
+            timeDiv.style.fontSize = '0.75rem';
+            timeDiv.textContent = timeStr;
+
+            const totalDiv = document.createElement('div');
+            totalDiv.className = 'history-total';
+            totalDiv.textContent = entry.total;
+
+            infoDiv.appendChild(diceDiv);
+            infoDiv.appendChild(resultsDiv);
+            infoDiv.appendChild(timeDiv);
+            item.appendChild(infoDiv);
+            item.appendChild(totalDiv);
+
+            return item;
+        },
+
+        /**
+         * 履歴をクリア
+         */
+        clearHistory: function() {
+            if (confirm('履歴をクリアしますか？')) {
+                HistoryManager.clear();
+                this.loadHistory();
+            }
+        }
+    };
+
+    /**
+     * ============================================================
+     * TDD テストランナー (TestRunner)
+     * ============================================================
+     *
+     * ブラウザベースのTDDテストスイート
+     * Red-Green-Refactor サイクルの検証
+     */
+
+    const TestRunner = {
+        results: [],
+        output: null,
+
+        /**
+         * テスト出力を初期化
+         */
+        init: function() {
+            this.output = document.getElementById('test-output');
+            this.results = [];
+            this.log('🧪 TDD テストスイート開始\n', 'info');
+        },
+
+        /**
+         * ログ出力
+         * @param {string} message - メッセージ
+         * @param {string} type - タイプ (pass/fail/info)
+         */
+        log: function(message, type = 'info') {
+            if (this.output) {
+                const span = document.createElement('span');
+                span.className = `test-${type}`;
+                span.textContent = message;
+                this.output.appendChild(span);
+                this.output.scrollTop = this.output.scrollHeight;
+            }
+            console.log(message);
+        },
+
+        /**
+         * アサーション
+         * @param {boolean} condition - 条件
+         * @param {string} message - メッセージ
+         */
+        assert: function(condition, message) {
+            if (condition) {
+                this.log(`  ✓ ${message}\n`, 'pass');
+                this.results.push({ name: message, passed: true });
+            } else {
+                this.log(`  ✗ ${message}\n`, 'fail');
+                this.results.push({ name: message, passed: false });
+            }
+        },
+
+        /**
+         * 等値チェック
+         */
+        assertEquals: function(actual, expected, message) {
+            const condition = actual === expected;
+            const fullMessage = message || `Expected ${expected}, but got ${actual}`;
+            this.assert(condition, fullMessage);
+        },
+
+        /**
+         * 配列等値チェック
+         */
+        assertArrayEquals: function(actual, expected, message) {
+            const condition = JSON.stringify(actual) === JSON.stringify(expected);
+            const fullMessage = message || `Expected [${expected.join(', ')}], but got [${actual.join(', ')}]`;
+            this.assert(condition, fullMessage);
+        },
+
+        /**
+         * 範囲チェック
+         */
+        assertInRange: function(value, min, max, message) {
+            const condition = value >= min && value <= max;
+            const fullMessage = message || `${value} should be between ${min} and ${max}`;
+            this.assert(condition, fullMessage);
+        },
+
+        /**
+         * すべてのテストを実行
+         */
+        runAllTests: function() {
+            this.init();
+
+            this.log('\n=== PHASE 2: DiceLogic テスト ===\n', 'info');
+            this.testDiceLogic();
+
+            this.log('\n=== PHASE 3: HistoryManager テスト ===\n', 'info');
+            this.testHistoryManager();
+
+            this.log('\n=== PHASE 4: DiceRenderer テスト ===\n', 'info');
+            this.testDiceRenderer();
+
+            this.log('\n=== PHASE 5: UIController テスト ===\n', 'info');
+            this.testUIController();
+
+            this.printSummary();
+        },
+
+        /**
+         * DiceLogic テスト
+         */
+        testDiceLogic: function() {
+            this.log('Testing DiceLogic.roll()...', 'info');
+
+            // テスト1: D6を1回振る
+            const result1 = DiceLogic.roll('D6', 1);
+            this.assert(result1.results.length === 1, 'D6 × 1 returns array with 1 element');
+            this.assertInRange(result1.results[0], 1, 6, 'D6 returns value between 1 and 6');
+            this.assertEquals(result1.total, result1.results[0], 'Total equals single result');
+
+            // テスト2: D6を3回振る
+            const result2 = DiceLogic.roll('D6', 3);
+            this.assert(result2.results.length === 3, 'D6 × 3 returns array with 3 elements');
+            result2.results.forEach(val => {
+                this.assertInRange(val, 1, 6, `Each D6 result is between 1 and 6`);
+            });
+
+            // テスト3: すべてのサイコロタイプ
+            const diceTypes = ['D4', 'D6', 'D8', 'D10', 'D12', 'D20', 'D100'];
+            diceTypes.forEach(type => {
+                const result = DiceLogic.roll(type, 1);
+                const max = DiceLogic.getMaxValue(type);
+                this.assertInRange(result.results[0], 1, max, `${type} returns valid value`);
+            });
+
+            // テスト4: 合計値計算
+            const result4 = DiceLogic.roll('D6', 5);
+            const expectedTotal = result4.results.reduce((sum, val) => sum + val, 0);
+            this.assertEquals(result4.total, expectedTotal, 'Total is calculated correctly');
+
+            // テスト5: エッジケース
+            try {
+                DiceLogic.roll('D6', 0);
+                this.assert(false, 'Should throw error for 0 dice');
+            } catch (e) {
+                this.assert(true, 'Throws error for 0 dice');
+            }
+
+            try {
+                DiceLogic.roll('D6', 21);
+                this.assert(false, 'Should throw error for 21 dice');
+            } catch (e) {
+                this.assert(true, 'Throws error for 21 dice');
+            }
+
+            try {
+                DiceLogic.roll('INVALID', 1);
+                this.assert(false, 'Should throw error for invalid dice type');
+            } catch (e) {
+                this.assert(true, 'Throws error for invalid dice type');
+            }
+
+            // テスト6: 最小値と最大値
+            this.assertEquals(DiceLogic.getMaxValue('D20'), 20, 'getMaxValue returns correct max');
+            this.assertEquals(DiceLogic.getMaxValue('INVALID'), 0, 'getMaxValue returns 0 for invalid type');
+        },
+
+        /**
+         * HistoryManager テスト
+         */
+        testHistoryManager: function() {
+            this.log('Testing HistoryManager...', 'info');
+
+            // クリーンアップ
+            HistoryManager.clear();
+            let history = HistoryManager.getHistory();
+            this.assertEquals(history.length, 0, 'History is empty after clear');
+
+            // テスト1: 履歴追加
+            HistoryManager.addRoll('D6', 2, [3, 4], 7);
+            history = HistoryManager.getHistory();
+            this.assertEquals(history.length, 1, 'History has 1 entry after adding');
+            this.assertEquals(history[0].diceType, 'D6', 'Entry has correct dice type');
+            this.assertEquals(history[0].total, 7, 'Entry has correct total');
+
+            // テスト2: 複数の履歴
+            HistoryManager.addRoll('D20', 1, [15], 15);
+            HistoryManager.addRoll('D6', 3, [1, 2, 3], 6);
+            history = HistoryManager.getHistory();
+            this.assertEquals(history.length, 3, 'History has 3 entries');
+
+            // テスト3: 新しい順に並ぶ
+            this.assertEquals(history[0].total, 6, 'Newest entry is first');
+            this.assertEquals(history[2].total, 7, 'Oldest entry is last');
+
+            // テスト4: 最大50件制限
+            for (let i = 0; i < 60; i++) {
+                HistoryManager.addRoll('D6', 1, [i % 6 + 1], i % 6 + 1);
+            }
+            history = HistoryManager.getHistory();
+            this.assert(history.length <= 50, 'History respects maximum of 50 entries');
+
+            // クリーンアップ
+            HistoryManager.clear();
+        },
+
+        /**
+         * DiceRenderer テスト
+         */
+        testDiceRenderer: function() {
+            this.log('Testing DiceRenderer...', 'info');
+
+            // テスト1: サイコロ要素作成
+            const dice = DiceRenderer.createDice('D6', 5);
+            this.assert(dice.classList.contains('dice'), 'Created element has dice class');
+            this.assertEquals(dice.dataset.type, 'D6', 'Dice has correct type');
+            this.assertEquals(dice.getAttribute('aria-label'), 'D6サイコロ: 5', 'Dice has correct aria-label');
+
+            // テスト2: サイコロの顔が作成される
+            const face = dice.querySelector('.dice-face');
+            this.assert(face !== null, 'Dice face is created');
+            this.assertEquals(face.textContent, '5', 'Face displays correct value');
+
+            // テスト3: コンテナクリア
+            DiceRenderer.clearContainer();
+            const container = document.getElementById('dice-container');
+            this.assertEquals(container.children.length, 0, 'Container is cleared');
+        },
+
+        /**
+         * UIController テスト
+         */
+        testUIController: function() {
+            this.log('Testing UIController...', 'info');
+
+            // テスト前に初期状態にリセット
+            UIController.state.selectedDice = 'D6';
+            UIController.state.diceCount = 1;
+
+            // テスト1: 初期状態
+            this.assertEquals(UIController.state.selectedDice, 'D6', 'Initial dice type is D6');
+            this.assertEquals(UIController.state.diceCount, 1, 'Initial dice count is 1');
+
+            // テスト2: サイコロタイプ選択
+            UIController.selectDiceType('D20');
+            this.assertEquals(UIController.state.selectedDice, 'D20', 'Dice type changes to D20');
+
+            // テスト3: サイコロ数更新
+            document.getElementById('dice-count').value = 5;
+            UIController.updateDiceCount();
+            this.assertEquals(UIController.state.diceCount, 5, 'Dice count updates to 5');
+
+            // 元に戻す
+            UIController.selectDiceType('D6');
+            document.getElementById('dice-count').value = 1;
+            UIController.updateDiceCount();
+        },
+
+        /**
+         * テスト結果サマリーを表示
+         */
+        printSummary: function() {
+            const passed = this.results.filter(r => r.passed).length;
+            const failed = this.results.filter(r => !r.passed).length;
+            const total = this.results.length;
+
+            this.log('\n' + '='.repeat(50) + '\n', 'info');
+            this.log(`📊 テスト結果: ${passed}/${total} passed`, failed === 0 ? 'pass' : 'fail');
+
+            if (failed > 0) {
+                this.log(`\n❌ ${failed}個のテストが失敗しました`, 'fail');
+            } else {
+                this.log(`\n✅ すべてのテストがパスしました！`, 'pass');
+            }
+            this.log('\n' + '='.repeat(50), 'info');
+        }
+    };
+
+    /**
+     * ============================================================
+     * アプリケーション初期化
+     * ============================================================
+     */
+    document.addEventListener('DOMContentLoaded', function() {
+        UIController.init();
+        console.log('🎲 サイコロアプリが初期化されました');
+        console.log('🧪 テストを実行するには「すべてのテストを実行」ボタンをクリックしてください');
+    });
+    </script>
+</body>
+</html>
