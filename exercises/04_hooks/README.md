@@ -11,11 +11,8 @@
 ```
 04_hooks/
   .claude/
-    CLAUDE.md              # 前のステップから継承
-    commands/              # 前のステップから継承
-    skills/                # 前のステップから継承
-    settings.json          # フック設定
-  app/                     # 前のステップと同じ
+    settings.local.json    # フック設定（このステップで学ぶ）
+  app/
 ```
 
 ## 学習内容

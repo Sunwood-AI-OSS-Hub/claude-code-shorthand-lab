@@ -10,18 +10,12 @@
 
 ```
 06_mcp/
-  .claude/
-    CLAUDE.md              # 前のステップから継承
-    commands/              # 前のステップから継承
-    skills/                # 前のステップから継承
-    settings.json          # 前のステップから継承
-    agents/                # 前のステップから継承
-  .mcp.json                # MCP設定
+  .mcp.json                # MCP設定（このステップで学ぶ）
   mcp-server/              # 学習用簡易MCPサーバー
     README.md
     package.json
     src/
-  app/                     # 前のステップと同じ
+  app/
 ```
 
 ## 学習内容
