@@ -80,6 +80,12 @@ Claude Code で以下のコマンドを順番に実行してください：
 
 各コマンドが正しく動作することを確認してください。
 
+## デモ動画
+
+実際の動作デモはこちら：
+
+[![Demo Tweet](https://img.shields.io/badge/Demo-Video-blue?style=social&logo=x)](https://x.com/hAru_mAki_ch/status/2013525099832283408)
+
 ---
 
 **前のステップ**: [Exercise 01: CLAUDE.md](../01_claude_md/README.md)
