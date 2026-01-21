@@ -42,3 +42,5 @@ exercises/02_slash_commands/.pnpm-store/
 
 exercises/02_slash_commands/app/
 !exercises/02_slash_commands/app/.gitkeep
+
+exercises/03_skills/app
