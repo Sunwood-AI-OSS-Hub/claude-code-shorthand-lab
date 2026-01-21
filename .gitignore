@@ -38,7 +38,7 @@ coverage/
 # Claude Code (学習用なのでコミットするが、認識は除外)
 # .claude/
 
-exercises/02_slash_commands/.pnpm-store/
+**/.pnpm-store/
 
 exercises/02_slash_commands/app/
 !exercises/02_slash_commands/app/.gitkeep
