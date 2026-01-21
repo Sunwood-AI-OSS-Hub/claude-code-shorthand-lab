@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '.tool_input.command' | grep -qE '(npm|pnpm|yarn|cargo)' && echo '⏳ [Hook] 長時間実行されるコマンドです。tmuxを使うことを検討してください 🐢' >> /workspace/hook.log || true"
+            "command": "jq -r '.tool_input.command' | { read cmd; if echo \"$cmd\" | grep -qE '(npm|pnpm|yarn|cargo)'; then echo \"⏳ [Hook] 長時間実行コマンド検知: $cmd 🐢\" >> /workspace/hook.log; fi; } || true"
           }
         ]
       },
@@ -15,7 +15,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '.tool_input.file_path' | grep -qE '\\.md$' && echo '📝 [Hook] .mdファイル作成検知！✏️' >> /workspace/hook.log || true"
+            "command": "jq -r '.tool_input.file_path' | { read file_path; if echo \"$file_path\" | grep -qE '\\.md$'; then echo \"📝 [Hook] .mdファイル作成検知: $file_path ✏️\" >> /workspace/hook.log; fi; } || true"
           }
         ]
       }
@@ -26,7 +26,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '.tool_input.file_path' | grep -qE '\\.(ts|tsx|js|jsx)$' && echo '✨ [Hook] JS/TS ファイル編集完了 💅' >> /workspace/hook.log || true"
+            "command": "jq -r '.tool_input.file_path' | { read file_path; if echo \"$file_path\" | grep -qE '\\.(ts|tsx|js|jsx)$'; then echo \"✨ [Hook] JS/TS ファイル編集完了: $file_path 💅\" >> /workspace/hook.log; fi; } || true"
           }
         ]
       },
@@ -35,7 +35,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "count=$(grep -rn 'console\\.log' app/src/*.ts 2>/dev/null | wc -l); echo \"🪵 [Hook] app/src/ に $count 個の console.log があります 🔎\" >> /workspace/hook.log || true"
+            "command": "jq -r '.tool_input.file_path' | { read file_path; count=$(grep -rn 'console\\.log' app/src/*.ts 2>/dev/null | wc -l); echo \"🪵 [Hook] $file_path 編集後 - app/src/ に $count 個の console.log 🔎\" >> /workspace/hook.log; } || true"
           }
         ]
       }
