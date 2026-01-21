@@ -52,6 +52,16 @@ ccd-glm
 # 自動的にフォーマットされます
 ```
 
+### フックのデバッグ
+
+フックが正しく動作しているか確認するには、`--debug hooks` オプションを使用します：
+
+```bash
+ccd-glm --debug hooks
+```
+
+これにより、フックの発火タイミングや実行内容が `hook.log` に出力されます。
+
 > [!NOTE]
 > `docker compose run --rm dev` で developer ユーザーとしてコンテナに入り、`ccd-glm` で Claude Code を起動します。
 
