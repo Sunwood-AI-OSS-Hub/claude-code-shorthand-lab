@@ -67,29 +67,51 @@ ccd-glm --debug hooks
 
 ## 完了条件
 
+- [ ] `hook.log` にフックのログが出力される
 - [ ] ファイル編集後に自動フォーマットされる
 - [ ] console.log を書くと警告が出る
 - [ ] git push 前にレビューを促される
 
+### 成功例（`hook.log` の出力イメージ）
+
+フックが正しく動作していれば、以下のようなログが出力されます：
+
+```
+✨ [Hook] JS/TS ファイル編集完了: /workspace/app/src/index.ts 💅
+🪵 [Hook] /workspace/app/src/index.ts 編集後 - app/src/ に 0 個の console.log 🔎
+⏳ [Hook] 長時間実行コマンド検知: pnpm build 🐢
+🛑 [Hook] セッション終了前チェック 📋
+```
+
+各フックが発火していることを確認してください。
+
 ## フックの仕組み
+
+フックは `settings.json` に以下のように記述します：
 
 ```json
 {
-  "PostToolUse": [
-    {
-      "matcher": "Edit && .ts/.tsx/.js/.jsx",
-      "hooks": [
-        {
-          "type": "command",
-          "command": "cd app && prettier --write"
-        }
-      ]
-    }
-  ]
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path' | { read file_path; echo \"✨ 編集完了: $file_path\" >> /workspace/hook.log; } || true"
+          }
+        ]
+      }
+    ]
+  }
 }
 ```
 
-ファイルを保存するたびに自動でフォーマットされます。
+**ポイント**：
+- `jq` でツールの入力（`.tool_input`）から情報を抽出
+- `matcher` で発火条件を指定（`Edit`, `Write`, `Bash` など）
+- ログは `/workspace/hook.log` に追記
+- `|| true` を付けてコマンド失敗時にセッションが止まらないようにする
 
 ---
 
