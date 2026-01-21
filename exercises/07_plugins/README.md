@@ -10,13 +10,7 @@
 
 ```
 07_plugins/
-  .claude/
-    CLAUDE.md              # 前のステップから継承
-    commands/              # 前のステップから継承
-    skills/                # 前のステップから継承
-    settings.json          # 前のステップから継承
-    agents/                # 前のステップから継承
-  plugins/                 # プラグイン
+  plugins/                 # プラグイン（このステップで学ぶ）
     dojo-tools/
       .claude-plugin/
         plugin.json        # プラグインマニフェスト
@@ -25,7 +19,7 @@
       skills/
         quick-review/
           SKILL.md
-  app/                     # 前のステップと同じ
+  app/
 ```
 
 ## 学習内容

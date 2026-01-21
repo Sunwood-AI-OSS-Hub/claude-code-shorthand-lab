@@ -11,15 +11,11 @@
 ```
 05_subagents/
   .claude/
-    CLAUDE.md              # 前のステップから継承
-    commands/              # 前のステップから継承
-    skills/                # 前のステップから継承
-    settings.json          # 前のステップから継承
-    agents/                # サブエージェント定義
+    agents/                # サブエージェント定義（このステップで学ぶ）
       planner.md
       code-reviewer.md
       tdd-guide.md
-  app/                     # 前のステップと同じ
+  app/
 ```
 
 ## 学習内容

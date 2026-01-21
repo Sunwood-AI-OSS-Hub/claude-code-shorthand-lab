@@ -11,15 +11,14 @@
 ```
 03_skills/
   .claude/
-    CLAUDE.md              # 前のステップから継承
-    commands/              # 前のステップから継承
+    CLAUDE.md              # このステップのルール
     skills/                # スキル定義
       tdd-workflow/
         SKILL.md
         reference.md
       refactor-clean/
         SKILL.md
-  app/                     # 前のステップと同じ
+  app/
 ```
 
 ## 学習内容
