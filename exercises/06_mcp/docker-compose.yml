@@ -1,0 +1,27 @@
+services:
+  dev:
+    build:
+      context: ../../
+      dockerfile: docker/Dockerfile.dev
+    volumes:
+      - ./:/workspace
+    working_dir: /workspace
+    env_file:
+      - ../../.env
+    tty: true
+
+  # 簡易MCPサーバー（学習用）
+  mcp:
+    build:
+      context: ../../
+      dockerfile: docker/Dockerfile.dev
+    volumes:
+      - ./mcp-server:/workspace
+    working_dir: /workspace
+    env_file:
+      - ../../.env
+    environment:
+      - MCP_PORT=3000
+    command: "npm run dev"
+    ports:
+      - "3000:3000"
