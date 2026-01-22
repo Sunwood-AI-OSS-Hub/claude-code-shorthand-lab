@@ -63,6 +63,12 @@ ccd-glm
 - [ ] Claude Code からMCPツールを使える
 - [ ] データの取得・更新ができる
 
+## デモ動画
+
+実際の動作デモはこちら：
+
+[![Demo Tweet](https://img.shields.io/badge/Demo-Video-blue?style=social&logo=x)](https://x.com/hAru_mAki_ch/status/2013973442903642113)
+
 ## MCPの仕組み
 
 MCPは「プロンプト駆動のラッパー」です。APIを直接呼ぶのではなく、Claudeが自然なリクエストを理解して、適切なツールを呼び出します。
