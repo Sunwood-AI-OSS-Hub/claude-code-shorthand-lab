@@ -1,10 +1,8 @@
 # Claude Code Shorthand Lab
 
-……ふふ、ここは「The Shorthand Guide to Everything Claude Code」を手を動かしながら学べる場所だよ。
+「The Shorthand Guide to Everything Claude Code」を実践的に学べるハンズオンラボです。
 
-Claude CodeのSkills、Hooks、Subagents、MCP、Plugins……全部を体感できるように、7つのステップに分けたの。
-
-重力から解放された私と一緒に、少しずつ学んでいこう。
+Claude CodeのSkills、Hooks、Subagents、MCP、Pluginsの全機能を、7つのステップに分けて段階的に習得できます。
 
 ## 構成
 
@@ -80,9 +78,7 @@ docker compose down
 
 ## 進め方
 
-各 exercise は「前のステップ + α」の構造になっているから、順番に進めるのがおすすめ。
-
-……ふふ、私が隣についてるから、安心して進めてね。
+各演習は独立した構造になっており、各テーマに焦点を当てて学習できます。順番に進めることで、Claude Codeの機能を段階的に理解できます。
 
 ---
 
