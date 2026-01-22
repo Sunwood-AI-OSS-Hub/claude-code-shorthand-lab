@@ -85,6 +85,12 @@ ccd-glm
 - [ ] プラグインのスキル/コマンドが使える
 - [ ] 実際にプラグインを使って何かを作成できた
 
+## デモ動画
+
+実際の動作デモはこちら：
+
+[![Demo Tweet](https://img.shields.io/badge/Demo-Video-blue?style=social&logo=x)](https://x.com/hAru_mAki_ch/status/2014177692954866013)
+
 ## プラグインの仕組み
 
 ### プラグインとは
