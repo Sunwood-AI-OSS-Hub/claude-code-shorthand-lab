@@ -13,9 +13,8 @@ CLAUDE.md を配置することで、Claude Code の振る舞いをカスタマ�
   .claude/
     CLAUDE.md          # プロジェクトルール設定
   app/
-    src/
-    tests/
-    scripts/
+    .gitkeep
+    .prettierrc        # Prettier設定
 ```
 
 ## 学習内容
