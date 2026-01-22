@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <path d="M4 6L16 2L28 6V16C28 23.732 21.732 30 14 30H4V6Z" stroke="url(#logo-gradient)" stroke-width="2" fill="none"/>
+                        <circle cx="16" cy="14" r="5" stroke="url(#logo-gradient)" stroke-width="2"/>
+                        <defs>
+                            <linearGradient id="logo-gradient" x1="4" y1="2" x2="28" y2="30">
+                                <stop offset="0%" stop-color="#06b6d4"/>
+                                <stop offset="100%" stop-color="#3b82f6"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span class="logo-text">NEXUS</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <span class="nav-label">メイン</span>
+                    <ul class="nav-list">
+                        <li class="nav-item active">
+                            <a href="#" class="nav-link">
+                                <svg class="nav-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <rect x="3" y="3" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                                    <rect x="11" y="3" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                                    <rect x="3" y="11" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                                    <rect x="11" y="11" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                                </svg>
+                                <span>ダッシュボード</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <svg class="nav-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M2 10C2 5.58172 5.58172 2 10 2C14.4183 2 18 5.58172 18 10C18 14.4183 14.4183 18 10 18C5.58172 18 2 14.4183 2 10Z" stroke="currentColor" stroke-width="1.5"/>
+                                    <path d="M10 6V10L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                                <span>アクティビティ</span>
+                                <span class="nav-badge">3</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <svg class="nav-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M2 7C2 5.34315 3.34315 4 5 4H15C16.6569 4 18 5.34315 18 7V13C18 14.6569 16.6569 16 15 16H5C3.34315 16 2 14.6569 2 13V7Z" stroke="currentColor" stroke-width="1.5"/>
+                                    <path d="M6 16V18H14V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                                <span>レポート</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <span class="nav-label">分析</span>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <svg class="nav-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M2 18L6 12L10 15L15 8L18 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <circle cx="6" cy="12" r="1.5" fill="currentColor"/>
+                                    <circle cx="10" cy="15" r="1.5" fill="currentColor"/>
+                                    <circle cx="15" cy="8" r="1.5" fill="currentColor"/>
+                                </svg>
+                                <span>トレンド</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <svg class="nav-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <circle cx="10" cy="10" r="6" stroke="currentColor" stroke-width="1.5"/>
+                                    <path d="M10 4V10L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                                <span>リアルタイム</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <svg class="nav-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 2L14 6H12V10H8V6H6L10 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                                    <path d="M10 18L6 14H8V10H12V14H14L10 18Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                                </svg>
+                                <span>コンバージョン</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="user-avatar">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" />
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name">田中 太郎</span>
+                        <span class="user-role">管理者</span>
+                    </div>
+                    <button class="user-menu-btn">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="3" r="1" fill="currentColor"/>
+                            <circle cx="8" cy="8" r="1" fill="currentColor"/>
+                            <circle cx="8" cy="13" r="1" fill="currentColor"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1 class="page-title">ダッシュボード</h1>
+                    <p class="page-subtitle">最新の分析データとインサイト</p>
+                </div>
+
+                <div class="header-right">
+                    <div class="search-box">
+                        <svg class="search-icon" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M13 13L16 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <input type="text" placeholder="検索..." class="search-input">
+                        <kbd class="search-shortcut">⌘K</kbd>
+                    </div>
+
+                    <button class="icon-btn header-btn">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M5 4C5 3.44772 5.44772 3 6 3H14C14.5523 3 15 3.44772 15 4V6H5V4Z" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M3 6H17V8H3V6Z" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M5 8V16C5 16.5523 5.44772 17 6 17H14C14.5523 17 15 16.5523 15 16V8" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M8 11V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M12 11V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+
+                    <button class="icon-btn header-btn">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 3C6.68629 3 4 5.68629 4 9C4 12.0766 6.34228 14.5919 9.34206 14.9557L10 16L10.6579 14.9557C13.6577 14.5919 16 12.0766 16 9C16 5.68629 13.3137 3 10 3Z" stroke="currentColor" stroke-width="1.5"/>
+                            <circle cx="8" cy="8" r="1" fill="currentColor"/>
+                            <circle cx="12" cy="8" r="1" fill="currentColor"/>
+                            <circle cx="10" cy="11" r="1" fill="currentColor"/>
+                        </svg>
+                        <span class="notification-dot"></span>
+                    </button>
+
+                    <div class="header-divider"></div>
+
+                    <button class="date-filter">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <rect x="2" y="3" width="12" height="11" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M5 1V3M11 1V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span>過去30日間</span>
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                            <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="content-wrapper">
+                <!-- Stats Cards -->
+                <section class="stats-grid">
+                    <div class="stat-card" style="--delay: 0ms">
+                        <div class="stat-header">
+                            <span class="stat-label">総収益</span>
+                            <span class="stat-trend positive">
+                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                    <path d="M6 2V10M6 10L3 7M6 10L9 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                +12.5%
+                            </span>
+                        </div>
+                        <div class="stat-value">¥<span class="stat-number">4,285,000</span></div>
+                        <div class="stat-footer">
+                            <span class="stat-period">先月比</span>
+                            <span class="stat-comparison positive">+¥477,000</span>
+                        </div>
+                        <div class="stat-sparkline">
+                            <svg width="120" height="32" viewBox="0 0 120 32" fill="none">
+                                <path d="M0 24L15 20L30 22L45 16L60 18L75 12L90 14L105 8L120 6" stroke="url(#spark1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <defs>
+                                    <linearGradient id="spark1" x1="0" y1="16" x2="120" y2="16">
+                                        <stop offset="0%" stop-color="#06b6d4"/>
+                                        <stop offset="100%" stop-color="#3b82f6"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="stat-card" style="--delay: 50ms">
+                        <div class="stat-header">
+                            <span class="stat-label">アクティブユーザー</span>
+                            <span class="stat-trend positive">
+                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                    <path d="M6 2V10M6 10L3 7M6 10L9 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                +8.2%
+                            </span>
+                        </div>
+                        <div class="stat-value"><span class="stat-number">24,589</span></div>
+                        <div class="stat-footer">
+                            <span class="stat-period">先月比</span>
+                            <span class="stat-comparison positive">+1,864</span>
+                        </div>
+                        <div class="stat-sparkline">
+                            <svg width="120" height="32" viewBox="0 0 120 32" fill="none">
+                                <path d="M0 20L15 18L30 22L45 16L60 14L75 18L90 10L105 12L120 4" stroke="url(#spark2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <defs>
+                                    <linearGradient id="spark2" x1="0" y1="16" x2="120" y2="16">
+                                        <stop offset="0%" stop-color="#22c55e"/>
+                                        <stop offset="100%" stop-color="#10b981"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="stat-card" style="--delay: 100ms">
+                        <div class="stat-header">
+                            <span class="stat-label">コンバージョン率</span>
+                            <span class="stat-trend negative">
+                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                    <path d="M6 10V2M6 2L3 5M6 2L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                -2.1%
+                            </span>
+                        </div>
+                        <div class="stat-value"><span class="stat-number">3.42</span>%</div>
+                        <div class="stat-footer">
+                            <span class="stat-period">先月比</span>
+                            <span class="stat-comparison negative">-0.08%</span>
+                        </div>
+                        <div class="stat-sparkline">
+                            <svg width="120" height="32" viewBox="0 0 120 32" fill="none">
+                                <path d="M0 8L15 12L30 10L45 16L60 14L75 18L90 20L105 16L120 22" stroke="url(#spark3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <defs>
+                                    <linearGradient id="spark3" x1="0" y1="16" x2="120" y2="16">
+                                        <stop offset="0%" stop-color="#f59e0b"/>
+                                        <stop offset="100%" stop-color="#ef4444"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="stat-card" style="--delay: 150ms">
+                        <div class="stat-header">
+                            <span class="stat-label">平均注文額</span>
+                            <span class="stat-trend positive">
+                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                    <path d="M6 2V10M6 10L3 7M6 10L9 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                +5.7%
+                            </span>
+                        </div>
+                        <div class="stat-value">¥<span class="stat-number">12,450</span></div>
+                        <div class="stat-footer">
+                            <span class="stat-period">先月比</span>
+                            <span class="stat-comparison positive">+¥675</span>
+                        </div>
+                        <div class="stat-sparkline">
+                            <svg width="120" height="32" viewBox="0 0 120 32" fill="none">
+                                <path d="M0 18L15 16L30 20L45 14L60 16L75 10L90 12L105 8L120 10" stroke="url(#spark4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <defs>
+                                    <linearGradient id="spark4" x1="0" y1="16" x2="120" y2="16">
+                                        <stop offset="0%" stop-color="#8b5cf6"/>
+                                        <stop offset="100%" stop-color="#a855f7"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Charts Section -->
+                <section class="charts-section">
+                    <div class="chart-card main-chart" style="--delay: 200ms">
+                        <div class="chart-header">
+                            <div>
+                                <h3 class="chart-title">収益トレンド</h3>
+                                <p class="chart-subtitle">月次収益の推移と予測</p>
+                            </div>
+                            <div class="chart-actions">
+                                <button class="chart-tab active">30日</button>
+                                <button class="chart-tab">90日</button>
+                                <button class="chart-tab">1年</button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <svg class="main-chart-svg" viewBox="0 0 800 300" preserveAspectRatio="none">
+                                <defs>
+                                    <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.3"/>
+                                        <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
+                                    </linearGradient>
+                                </defs>
+                                <!-- Grid Lines -->
+                                <g class="chart-grid">
+                                    <line x1="0" y1="60" x2="800" y2="60" stroke="#1e293b" stroke-width="1"/>
+                                    <line x1="0" y1="120" x2="800" y2="120" stroke="#1e293b" stroke-width="1"/>
+                                    <line x1="0" y1="180" x2="800" y2="180" stroke="#1e293b" stroke-width="1"/>
+                                    <line x1="0" y1="240" x2="800" y2="240" stroke="#1e293b" stroke-width="1"/>
+                                </g>
+                                <!-- Area -->
+                                <path class="chart-area" d="M0,240 L0,180 L66,165 L133,175 L200,140 L266,150 L333,120 L400,130 L466,100 L533,110 L600,80 L666,90 L733,60 L800,70 L800,300 L0,300 Z" fill="url(#chartGradient)"/>
+                                <!-- Line -->
+                                <path class="chart-line" d="M0,180 L66,165 L133,175 L200,140 L266,150 L333,120 L400,130 L466,100 L533,110 L600,80 L666,90 L733,60 L800,70" stroke="#06b6d4" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                                <!-- Data Points -->
+                                <g class="chart-points">
+                                    <circle cx="0" cy="180" r="4" fill="#06b6d4"/>
+                                    <circle cx="66" cy="165" r="4" fill="#06b6d4"/>
+                                    <circle cx="133" cy="175" r="4" fill="#06b6d4"/>
+                                    <circle cx="200" cy="140" r="4" fill="#06b6d4"/>
+                                    <circle cx="266" cy="150" r="4" fill="#06b6d4"/>
+                                    <circle cx="333" cy="120" r="4" fill="#06b6d4"/>
+                                    <circle cx="400" cy="130" r="4" fill="#06b6d4"/>
+                                    <circle cx="466" cy="100" r="4" fill="#06b6d4"/>
+                                    <circle cx="533" cy="110" r="4" fill="#06b6d4"/>
+                                    <circle cx="600" cy="80" r="4" fill="#06b6d4"/>
+                                    <circle cx="666" cy="90" r="4" fill="#06b6d4"/>
+                                    <circle cx="733" cy="60" r="6" fill="#06b6d4" stroke="#0f172a" stroke-width="2"/>
+                                    <circle cx="800" cy="70" r="4" fill="#06b6d4"/>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="chart-x-labels">
+                            <span>1月</span>
+                            <span>2月</span>
+                            <span>3月</span>
+                            <span>4月</span>
+                            <span>5月</span>
+                            <span>6月</span>
+                            <span>7月</span>
+                            <span>8月</span>
+                            <span>9月</span>
+                            <span>10月</span>
+                            <span>11月</span>
+                            <span>12月</span>
+                            <span>1月</span>
+                        </div>
+                    </div>
+
+                    <div class="chart-cards-row">
+                        <div class="chart-card small-chart" style="--delay: 250ms">
+                            <div class="chart-header">
+                                <h3 class="chart-title">トラフィックソース</h3>
+                            </div>
+                            <div class="doughnut-chart">
+                                <svg viewBox="0 0 160 160">
+                                    <circle cx="80" cy="80" r="60" fill="none" stroke="#1e293b" stroke-width="20"/>
+                                    <circle cx="80" cy="80" r="60" fill="none" stroke="#06b6d4" stroke-width="20" stroke-dasharray="226 377" stroke-dashoffset="0" transform="rotate(-90 80 80)"/>
+                                    <circle cx="80" cy="80" r="60" fill="none" stroke="#3b82f6" stroke-width="20" stroke-dasharray="94 377" stroke-dashoffset="-226" transform="rotate(-90 80 80)"/>
+                                    <circle cx="80" cy="80" r="60" fill="none" stroke="#8b5cf6" stroke-width="20" stroke-dasharray="57 377" stroke-dashoffset="-320" transform="rotate(-90 80 80)"/>
+                                    <text x="80" y="75" text-anchor="middle" fill="#f8fafc" font-size="24" font-weight="600">8,421</text>
+                                    <text x="80" y="95" text-anchor="middle" fill="#94a3b8" font-size="11">セッション</text>
+                                </svg>
+                            </div>
+                            <div class="legend">
+                                <div class="legend-item">
+                                    <span class="legend-dot" style="background: #06b6d4"></span>
+                                    <span class="legend-label">オーガニック</span>
+                                    <span class="legend-value">60%</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-dot" style="background: #3b82f6"></span>
+                                    <span class="legend-label">直接</span>
+                                    <span class="legend-value">25%</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-dot" style="background: #8b5cf6"></span>
+                                    <span class="legend-label">ソーシャル</span>
+                                    <span class="legend-value">15%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chart-card small-chart" style="--delay: 300ms">
+                            <div class="chart-header">
+                                <h3 class="chart-title">デバイス分布</h3>
+                            </div>
+                            <div class="device-stats">
+                                <div class="device-item">
+                                    <div class="device-icon desktop">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                            <rect x="3" y="4" width="18" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                                            <path d="M8 16V18H16V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                        </svg>
+                                    </div>
+                                    <div class="device-info">
+                                        <span class="device-name">デスクトップ</span>
+                                        <span class="device-value">58%</span>
+                                    </div>
+                                    <div class="device-bar">
+                                        <div class="device-bar-fill" style="width: 58%"></div>
+                                    </div>
+                                </div>
+                                <div class="device-item">
+                                    <div class="device-icon mobile">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                            <rect x="7" y="3" width="10" height="16" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                                            <path d="M10 17H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                        </svg>
+                                    </div>
+                                    <div class="device-info">
+                                        <span class="device-name">モバイル</span>
+                                        <span class="device-value">35%</span>
+                                    </div>
+                                    <div class="device-bar">
+                                        <div class="device-bar-fill" style="width: 35%"></div>
+                                    </div>
+                                </div>
+                                <div class="device-item">
+                                    <div class="device-icon tablet">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                            <rect x="5" y="4" width="14" height="14" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                                        </svg>
+                                    </div>
+                                    <div class="device-info">
+                                        <span class="device-name">タブレット</span>
+                                        <span class="device-value">7%</span>
+                                    </div>
+                                    <div class="device-bar">
+                                        <div class="device-bar-fill" style="width: 7%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Recent Activity -->
+                <section class="activity-section" style="--delay: 350ms">
+                    <div class="activity-header">
+                        <h3 class="section-title">最近のアクティビティ</h3>
+                        <button class="view-all-btn">すべて表示 →</button>
+                    </div>
+                    <div class="activity-table-wrapper">
+                        <table class="activity-table">
+                            <thead>
+                                <tr>
+                                    <th>トランザクション</th>
+                                    <th>ステータス</th>
+                                    <th>金額</th>
+                                    <th>日時</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="activity-row">
+                                    <td>
+                                        <div class="transaction-info">
+                                            <div class="transaction-icon">
+                                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                                    <path d="M10 2L4 6V9C4 13.4183 6.58172 17.3127 10 18.5C13.4183 17.3127 16 13.4183 16 9V6L10 2Z" stroke="currentColor" stroke-width="1.5"/>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <span class="transaction-id">#TXN-7842</span>
+                                                <span class="transaction-desc">プレミアムプラン購入</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge success">完了</span>
+                                    </td>
+                                    <td>
+                                        <span class="amount">¥49,800</span>
+                                    </td>
+                                    <td>
+                                        <span class="datetime">2024年1月15日 14:32</span>
+                                    </td>
+                                    <td>
+                                        <button class="row-action-btn">
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                <circle cx="3" cy="8" r="1" fill="currentColor"/>
+                                                <circle cx="8" cy="8" r="1" fill="currentColor"/>
+                                                <circle cx="13" cy="8" r="1" fill="currentColor"/>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="activity-row">
+                                    <td>
+                                        <div class="transaction-info">
+                                            <div class="transaction-icon">
+                                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                                    <path d="M5 4H15V6H5V4Z" fill="currentColor"/>
+                                                    <path d="M4 6H16V8H4V6Z" fill="currentColor"/>
+                                                    <path d="M5 8H15V16C15 16.5523 14.5523 17 14 17H6C5.44772 17 5 16.5523 5 16V8Z" fill="currentColor"/>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <span class="transaction-id">#TXN-7841</span>
+                                                <span class="transaction-desc">基本プラン購入</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge success">完了</span>
+                                    </td>
+                                    <td>
+                                        <span class="amount">¥12,000</span>
+                                    </td>
+                                    <td>
+                                        <span class="datetime">2024年1月15日 12:18</span>
+                                    </td>
+                                    <td>
+                                        <button class="row-action-btn">
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                <circle cx="3" cy="8" r="1" fill="currentColor"/>
+                                                <circle cx="8" cy="8" r="1" fill="currentColor"/>
+                                                <circle cx="13" cy="8" r="1" fill="currentColor"/>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="activity-row">
+                                    <td>
+                                        <div class="transaction-info">
+                                            <div class="transaction-icon">
+                                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                                    <path d="M10 2L4 6V9C4 13.4183 6.58172 17.3127 10 18.5C13.4183 17.3127 16 13.4183 16 9V6L10 2Z" stroke="currentColor" stroke-width="1.5"/>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <span class="transaction-id">#TXN-7840</span>
+                                                <span class="transaction-desc">ビジネスプラン購入</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge pending">処理中</span>
+                                    </td>
+                                    <td>
+                                        <span class="amount">¥98,000</span>
+                                    </td>
+                                    <td>
+                                        <span class="datetime">2024年1月15日 10:45</span>
+                                    </td>
+                                    <td>
+                                        <button class="row-action-btn">
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                <circle cx="3" cy="8" r="1" fill="currentColor"/>
+                                                <circle cx="8" cy="8" r="1" fill="currentColor"/>
+                                                <circle cx="13" cy="8" r="1" fill="currentColor"/>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="activity-row">
+                                    <td>
+                                        <div class="transaction-info">
+                                            <div class="transaction-icon refund">
+                                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                                    <path d="M10 18L16 14V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M4 6L10 2L16 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M10 10V18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                                    <path d="M4 14V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <span class="transaction-id">#TXN-7839</span>
+                                                <span class="transaction-desc">返金処理</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge warning">返金</span>
+                                    </td>
+                                    <td>
+                                        <span class="amount refund">-¥24,500</span>
+                                    </td>
+                                    <td>
+                                        <span class="datetime">2024年1月14日 16:22</span>
+                                    </td>
+                                    <td>
+                                        <button class="row-action-btn">
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                <circle cx="3" cy="8" r="1" fill="currentColor"/>
+                                                <circle cx="8" cy="8" r="1" fill="currentColor"/>
+                                                <circle cx="13" cy="8" r="1" fill="currentColor"/>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="activity-row">
+                                    <td>
+                                        <div class="transaction-info">
+                                            <div class="transaction-icon">
+                                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                                    <path d="M5 4H15V6H5V4Z" fill="currentColor"/>
+                                                    <path d="M4 6H16V8H4V6Z" fill="currentColor"/>
+                                                    <path d="M5 8H15V16C15 16.5523 14.5523 17 14 17H6C5.44772 17 5 16.5523 5 16V8Z" fill="currentColor"/>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <span class="transaction-id">#TXN-7838</span>
+                                                <span class="transaction-desc">アドオン購入</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge success">完了</span>
+                                    </td>
+                                    <td>
+                                        <span class="amount">¥5,400</span>
+                                    </td>
+                                    <td>
+                                        <span class="datetime">2024年1月14日 09:15</span>
+                                    </td>
+                                    <td>
+                                        <button class="row-action-btn">
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                <circle cx="3" cy="8" r="1" fill="currentColor"/>
+                                                <circle cx="8" cy="8" r="1" fill="currentColor"/>
+                                                <circle cx="13" cy="8" r="1" fill="currentColor"/>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
